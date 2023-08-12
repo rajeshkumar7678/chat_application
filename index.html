@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Link CDN Script -->
+    <script src="https://kit.fontawesome.com/8533c91442.js" crossorigin="anonymous" crossorigin="anonymous" ></script>
+    <!-- Link Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+     <!--Link File CSS  -->
+     <link rel="stylesheet" href="../css/login.css">
+
+    <title>deshboard</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="center">
+        <h1>enter details</h1>
+        <form id="form">
+            <div class="txt_field">
+                <input id="useremail" type="Email" required />
+                <span></span>
+                <label>Email</label>
+            </div>
+          <div class="txt_field">
+            <input id="userpassword" type="password" required />
+            <span></span>
+            <label>Password</label>
+          </div>
+          <div class="pass">Forgot Password?</div>
+  
+          <input type="submit" value="Let's Chat" />
+          <div class="singup_link">Not a member? <a href="./signup.html">Singup</a></div>
+        </form>
+      </div>
+      <div class="content">
+        <div>
+          <h1>Chatting app</h1>
+          <h2>Welcome to our Chat Application</h2>
+      <h2>Connect and chat with friends around the world!</h2>
+        </div>
+        
+      </div>
+
+    </div>
+    
+  </body>
+  <script>
+    let useremail = document.getElementById("useremail");
+    let userpassword = document.getElementById("userpassword");
+    let button = document.getElementById("form");
+    let submitButton = document.querySelector('input[type="submit"]'); // Get the submit button
+  
+    button.addEventListener("submit", async (e) => {
+      e.preventDefault();
+  
+      // Create the loader element
+      let loader = document.createElement("div");
+      loader.className = "custom-loader";
+  
+      // Add the loader to the submit button
+      submitButton.insertAdjacentElement("beforebegin", loader);
+      submitButton.style.display = "none"; // Hide the submit button temporarily
+  
+      let userobj = {
+        email: useremail.value,
+        password: userpassword.value,
+      };
+  
+      try {
+        let response = await fetch("https://chitchat-x3mf.onrender.com/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userobj),
+        });
+  
+        if (response.redirected) {
+          window.location.href = response.url; // Redirect to the specified URL
+        } else {
+          let responseData = await response.json(); // Process the response
+          alert(responseData.msg)
+          console.log(responseData);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        // Remove the loader and show the submit button again
+        loader.remove();
+        submitButton.style.display = "block";
+      }
+    });
+  </script>
+  
+</html>
